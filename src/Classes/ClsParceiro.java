@@ -93,7 +93,9 @@ public class ClsParceiro implements Serializable {
 
     @Override
     public String toString() {
-        return nome_parceiro;
+        return "ClsParceiro{" + "id_parceiro=" + id_parceiro + ", nome_parceiro=" + nome_parceiro + '}';
     }
+
+    
 
 }

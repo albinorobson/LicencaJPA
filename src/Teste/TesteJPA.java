@@ -6,8 +6,8 @@
 package Teste;
 
 import Classes.ClsParceiro;
-import DAO.Conexao;
-import javax.persistence.EntityManager;
+import DAO.ClsParceiroDAO;
+import java.util.List;
 
 /**
  *
@@ -20,14 +20,18 @@ public class TesteJPA {
      */
     public static void main(String[] args) {
       
-        EntityManager em = Conexao.getconexao();
-        ClsParceiro p = new ClsParceiro();
-        p.setNome_parceiro("Teste");
-        //p.setIso("CHI");
-        em.getTransaction().begin();
-        em.persist(p);
-        em.getTransaction().commit();
-        em.close(); 
+
+        ClsParceiroDAO dao = new ClsParceiroDAO();
+        List<ClsParceiro> lista = dao.lista();
+//        em.getTransaction().begin();
+//        em.persist(p);
+//        em.getTransaction().commit();
+//        em.close(); 
+        for (int i=0;i<lista.size();i++)
+        {
+            System.out.println(lista.get(i));
+        }
+        //System.out.println(p.getNome_parceiro());
     }
     
 }

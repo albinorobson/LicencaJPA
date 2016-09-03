@@ -27,7 +27,7 @@ public class ClsParceiro implements Serializable {
     //<editor-fold defaultstate="collapsed" desc="Definição das colunas e atributos">
     @Id
     @SequenceGenerator(name = "parceiro_id_parceiro_seq", sequenceName = "parceiro_id_parceiro_seq", allocationSize = 1)
-    @GeneratedValue(generator = "parceiro_id_parceiro_seq", strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(generator = "parceiro_id_parceiro_seq", strategy = GenerationType.IDENTITY)
     @Column(name = "id_parceiro", nullable = false, columnDefinition = "bigint NOT NULL DEFAULT nextval('parceiro_id_parceiro_seq'::regclass)")
     @PrimaryKeyJoinColumn(name = "parceiro_pkey", referencedColumnName = "id_parceiro")
     private long id_parceiro;

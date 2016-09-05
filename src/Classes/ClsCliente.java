@@ -6,12 +6,12 @@ import java.util.Calendar;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -24,7 +24,7 @@ import org.hibernate.annotations.ForeignKey;
  */
 @Entity
 @Table(name="cliente")
-public class Cls_cliente implements Serializable{
+public class ClsCliente implements Serializable{
     
 //  id_cliente bigint NOT NULL DEFAULT nextval('cliente_id_cliente_seq'::regclass),
 //  nome character varying NOT NULL,
@@ -41,23 +41,30 @@ public class Cls_cliente implements Serializable{
 //  CONSTRAINT cliente_serial_number_hd_check CHECK (length(serial_number_hd::text) > 10)
     @Id
     @SequenceGenerator(name = "cliente_id_cliente_seq", sequenceName = "cliente_id_cliente_seq", allocationSize = 1)
-    @GeneratedValue(generator = "cliente_id_cliente_seq", strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator = "cliente_id_cliente_seq", strategy = GenerationType.SEQUENCE)
     @Column(name = "id_cliente", nullable = false, columnDefinition = "bigint NOT NULL DEFAULT nextval('cliente_id_cliente_seq'::regclass)")
     @PrimaryKeyJoinColumn(name = "cliente_pkey", referencedColumnName = "id_parceiro")
     private long id_cliente;
+    @Column(columnDefinition = "character varying",nullable = false)
     private String nome;
+    @Column(columnDefinition = "character varying")
+    @Check(constraints = "cliente_serial_number_hd_check CHECK (length(serial_number_hd::text) > 10)")
+    String serial_number_hd;
+    @Column(columnDefinition = "timestamp without time zone")
     private Calendar dt_last_verify;
+    @Column(columnDefinition = "boolean NOT NULL DEFAULT true",nullable = false)
     private boolean atualizado;
+    @Column(columnDefinition = "cnpj")
     private String cnpj;
+    @Column(columnDefinition = "timestamp without time zone DEFAULT now()")
     private Calendar data_criado;
-    @ManyToOne
-    @JoinColumn(name = "nome_parceiro",referencedColumnName = "nome_parceiro",nullable = false,table = "parceiro"   ) 
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "nome_parceiro",referencedColumnName = "nome_parceiro",nullable = true,insertable = true) 
     @ForeignKey(name = "cliente_nome_parceiro_fkey")
-    @OneToMany(cascade = CascadeType.MERGE,mappedBy = "cliente")
     private ClsParceiro parceiro;
 
     
-    public Cls_cliente() {
+    public ClsCliente() {
     }
 
     public long getId_cliente() {
@@ -134,7 +141,7 @@ public class Cls_cliente implements Serializable{
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final Cls_cliente other = (Cls_cliente) obj;
+        final ClsCliente other = (ClsCliente) obj;
         if (this.id_cliente != other.id_cliente) {
             return false;
         }

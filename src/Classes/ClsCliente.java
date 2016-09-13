@@ -1,69 +1,19 @@
-
 package Classes;
 
 import java.io.Serializable;
-import java.util.Calendar;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-import org.hibernate.annotations.Check;
-import org.hibernate.annotations.ForeignKey;
+import java.util.Date;
 
-/**
- *
- * @author robson
- */
-@Entity
-@Table(name="cliente")
-public class ClsCliente implements Serializable{
-    
-//  id_cliente bigint NOT NULL DEFAULT nextval('cliente_id_cliente_seq'::regclass),
-//  nome character varying NOT NULL,
-//  serial_number_hd character varying,
-//  dt_last_verify timestamp without time zone,
-//  atualizado boolean NOT NULL DEFAULT true,
-//  cnpj cnpj,
-//  data_criado timestamp without time zone NOT NULL DEFAULT now(),
-//  nome_parceiro character varying,
-//  CONSTRAINT cliente_pkey PRIMARY KEY (id_cliente),
-//  CONSTRAINT cliente_nome_parceiro_fkey FOREIGN KEY (nome_parceiro)
-//  REFERENCES public.parceiro (nome_parceiro) MATCH SIMPLE
-//  ON UPDATE CASCADE ON DELETE RESTRICT,
-//  CONSTRAINT cliente_serial_number_hd_check CHECK (length(serial_number_hd::text) > 10)
-    @Id
-    @SequenceGenerator(name = "cliente_id_cliente_seq", sequenceName = "cliente_id_cliente_seq", allocationSize = 1)
-    @GeneratedValue(generator = "cliente_id_cliente_seq", strategy = GenerationType.SEQUENCE)
-    @Column(name = "id_cliente", nullable = false, columnDefinition = "bigint NOT NULL DEFAULT nextval('cliente_id_cliente_seq'::regclass)")
-    @PrimaryKeyJoinColumn(name = "cliente_pkey", referencedColumnName = "id_parceiro")
+public class ClsCliente implements Serializable {
+
     private long id_cliente;
-    @Column(columnDefinition = "character varying",nullable = false)
     private String nome;
-    @Column(columnDefinition = "character varying")
-    @Check(constraints = "cliente_serial_number_hd_check CHECK (length(serial_number_hd::text) > 10)")
-    String serial_number_hd;
-    @Column(columnDefinition = "timestamp without time zone")
-    private Calendar dt_last_verify;
-    @Column(columnDefinition = "boolean NOT NULL DEFAULT true",nullable = false)
+    private String serial_number_hd;
+    private Date dtlastverify;
     private boolean atualizado;
-    @Column(columnDefinition = "cnpj")
     private String cnpj;
-    @Column(columnDefinition = "timestamp without time zone DEFAULT now()")
-    private Calendar data_criado;
-    @ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "nome_parceiro",referencedColumnName = "nome_parceiro",nullable = true,insertable = true) 
-    @ForeignKey(name = "cliente_nome_parceiro_fkey")
+    private Date datacriado;
     private ClsParceiro parceiro;
 
-    
     public ClsCliente() {
     }
 
@@ -83,12 +33,20 @@ public class ClsCliente implements Serializable{
         this.nome = nome;
     }
 
-    public Calendar getDt_last_verify() {
-        return dt_last_verify;
+    public String getSerial_number_hd() {
+        return serial_number_hd;
     }
 
-    public void setDt_last_verify(Calendar dt_last_verify) {
-        this.dt_last_verify = dt_last_verify;
+    public void setSerial_number_hd(String serial_number_hd) {
+        this.serial_number_hd = serial_number_hd;
+    }
+
+    public Date getDtlastverify() {
+        return dtlastverify;
+    }
+
+    public void setDtlastverify(Date dtlastverify) {
+        this.dtlastverify = dtlastverify;
     }
 
     public boolean isAtualizado() {
@@ -107,12 +65,12 @@ public class ClsCliente implements Serializable{
         this.cnpj = cnpj;
     }
 
-    public Calendar getData_criado() {
-        return data_criado;
+    public Date getDatacriado() {
+        return datacriado;
     }
 
-    public void setData_criado(Calendar data_criado) {
-        this.data_criado = data_criado;
+    public void setDatacriado(Date datacriado) {
+        this.datacriado = datacriado;
     }
 
     public ClsParceiro getParceiro() {
@@ -125,8 +83,8 @@ public class ClsCliente implements Serializable{
 
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash = 37 * hash + (int) (this.id_cliente ^ (this.id_cliente >>> 32));
+        int hash = 5;
+        hash = 47 * hash + (int) (this.id_cliente ^ (this.id_cliente >>> 32));
         return hash;
     }
 
@@ -147,12 +105,5 @@ public class ClsCliente implements Serializable{
         }
         return true;
     }
-
-    @Override
-    public String toString() {
-        return "Cls_cliente{" + "id_cliente=" + id_cliente + ", nome=" + nome + ", dt_last_verify=" + dt_last_verify + ", atualizado=" + atualizado + ", cnpj=" + cnpj + ", data_criado=" + data_criado + ", parceiro=" + parceiro + '}';
-    }
-    
-    
     
 }

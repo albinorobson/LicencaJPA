@@ -1,17 +1,42 @@
 package Classes;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import org.hibernate.annotations.ForeignKey;
 
+@Entity
+@Table(name="cliente")
 public class ClsCliente implements Serializable {
-
+    SimpleDateFormat dt = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+    @Id
+    @SequenceGenerator(name="cliente_id_cliente_seq",sequenceName = "cliente_id_cliente_seq",allocationSize = 1)
+    @GeneratedValue(generator = "cliente_id_cliente_seq",strategy = GenerationType.IDENTITY)
     private long id_cliente;
     private String nome;
-    private String serial_number_hd;
-    private Date dtlastverify;
+    @Column(name="serial_number_hd")
+    private String serialnumberhd;
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name="dt_last_verify")
+    private String dtlastverify = dt.format(new Date());
     private boolean atualizado;
     private String cnpj;
-    private Date datacriado;
+    @Temporal(TemporalType.TIMESTAMP)
+    private String datacriado = dt.format(new Date());
+    @ManyToOne
+    @JoinColumn(name="nome_parceiro",referencedColumnName = "nome_parceiro",nullable = false)
+    @ForeignKey(name="cliente_nome_parceiro_fkey")
     private ClsParceiro parceiro;
 
     public ClsCliente() {
@@ -34,18 +59,18 @@ public class ClsCliente implements Serializable {
     }
 
     public String getSerial_number_hd() {
-        return serial_number_hd;
+        return serialnumberhd;
     }
 
     public void setSerial_number_hd(String serial_number_hd) {
-        this.serial_number_hd = serial_number_hd;
+        this.serialnumberhd = serial_number_hd;
     }
 
-    public Date getDtlastverify() {
+    public String getDtlastverify() {
         return dtlastverify;
     }
 
-    public void setDtlastverify(Date dtlastverify) {
+    public void setDtlastverify(String dtlastverify) {
         this.dtlastverify = dtlastverify;
     }
 
@@ -65,11 +90,11 @@ public class ClsCliente implements Serializable {
         this.cnpj = cnpj;
     }
 
-    public Date getDatacriado() {
+    public String getDatacriado() {
         return datacriado;
     }
 
-    public void setDatacriado(Date datacriado) {
+    public void setDatacriado(String datacriado) {
         this.datacriado = datacriado;
     }
 
